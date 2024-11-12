@@ -1,0 +1,20 @@
+.Count {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 50px;
+    gap: 25px;
+}
+
+.Count-input {
+    width: 50px;
+    padding: 5px 10px;
+    margin: 0 auto;
+}
+
+.Count-footer {
+    display: flex;
+    justify-content: space-around;
+    gap: 10px;
+}
+

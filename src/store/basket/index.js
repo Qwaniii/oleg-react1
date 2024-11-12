@@ -1,3 +1,4 @@
+import count from '../../components/count';
 import StoreModule from '../module';
 
 /**
@@ -9,46 +10,65 @@ class BasketState extends StoreModule {
       list: [],
       sum: 0,
       amount: 0,
+      id: null
     };
   }
+
+  getId = (value) => {
+    this.setState(
+      {
+        ...this.getState(),
+        id: value
+      },
+      'Id товара',
+    );
+  }
+
+  getCount() {
+      return new Promise((resolve) => {
+        if(this.getState().id) resolve(this.getState().id)
+      })
+  }
+  
 
   /**
    * Добавление товара в корзину
    * @param _id {String} Код товара
    */
-  async addToBasket(_id) {
-    let sum = 0;
-    // Ищем товар в корзине, чтобы увеличить его количество
-    let exist = false;
-    const list = this.getState().list.map(item => {
-      let result = item;
-      if (item._id === _id) {
-        exist = true; // Запомним, что был найден в корзине
-        result = { ...item, amount: item.amount + 1 };
+  async addToBasket(_id, count) {
+      let sum = 0;
+      // Ищем товар в корзине, чтобы увеличить его количество
+      let exist = false;
+      const list = this.getState().list.map(item => {
+        let result = item;
+        if (item._id === _id) {
+          exist = true; // Запомним, что был найден в корзине
+          result = { ...item, amount: item.amount + count };
+        }
+        sum += result.price * result.amount;
+        return result;
+      });
+  
+      if (!exist) {
+        // Поиск товара в каталоге, чтобы его добавить в корзину.
+        const res = await this.services.api.request({ url: `/api/v1/articles/${_id}` });
+        const item = res.data.result;
+  
+        list.push({ ...item, amount: count }); // list уже новый, в него можно пушить.
+        // Добавляем к сумме.
+        sum += item.price;
       }
-      sum += result.price * result.amount;
-      return result;
-    });
-
-    if (!exist) {
-      // Поиск товара в каталоге, чтобы его добавить в корзину.
-      const res = await this.services.api.request({ url: `/api/v1/articles/${_id}` });
-      const item = res.data.result;
-
-      list.push({ ...item, amount: 1 }); // list уже новый, в него можно пушить.
-      // Добавляем к сумме.
-      sum += item.price;
-    }
-
-    this.setState(
-      {
-        ...this.getState(),
-        list,
-        sum,
-        amount: list.length,
-      },
-      'Добавление в корзину',
-    );
+  
+      this.setState(
+        {
+          ...this.getState(),
+          list,
+          sum,
+          amount: list.length,
+        },
+        'Добавление в корзину',
+      );
+    
   }
 
   /**
