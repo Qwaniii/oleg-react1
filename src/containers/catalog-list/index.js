@@ -24,14 +24,15 @@ function CatalogList() {
     count: state.catalog.count,
     waiting: state.catalog.waiting,
     countItem: state.basket.count,
+    inner: state.catalog.inner
   }));
 
   const callbacks = {
     // Добавление в корзину
-    addCount: (id) => {
-      dispatch(modalsActions.open("count"))
-      store.actions.basket.getId(id)
-    },   
+    addCount: useCallback(async(_id) => {
+      const count = await store.actions.modals.open("push-count")
+      store.actions.basket.addToBasket(_id, count)
+    }, [store]),   
     // addToBasket: useCallback(_id => store.actions.basket.addToBasket(_id), [store]),
     // Пагинация
     onPaginate: useCallback(page => store.actions.catalog.setParams({ page }), [store]),
@@ -59,6 +60,7 @@ function CatalogList() {
           onAdd={callbacks.addCount}
           link={`/articles/${item._id}`}
           labelAdd={t('article.add')}
+          inner={select.inner}
         />
       ),
       [callbacks.addToBasket, t],

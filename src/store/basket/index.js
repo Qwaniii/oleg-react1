@@ -14,23 +14,6 @@ class BasketState extends StoreModule {
     };
   }
 
-  getId = (value) => {
-    this.setState(
-      {
-        ...this.getState(),
-        id: value
-      },
-      'Id товара',
-    );
-  }
-
-  getCount() {
-      return new Promise((resolve) => {
-        if(this.getState().id) resolve(this.getState().id)
-      })
-  }
-  
-
   /**
    * Добавление товара в корзину
    * @param _id {String} Код товара
@@ -56,7 +39,7 @@ class BasketState extends StoreModule {
   
         list.push({ ...item, amount: count }); // list уже новый, в него можно пушить.
         // Добавляем к сумме.
-        sum += item.price;
+        sum += item.price * count;
       }
   
       this.setState(

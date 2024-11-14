@@ -9,6 +9,7 @@ import List from '../../components/list';
 import ModalLayout from '../../components/modal-layout';
 import BasketTotal from '../../components/basket-total';
 import modalsActions from '../../store-redux/modals/actions';
+import Controls from '../../components/controls';
 
 function Basket() {
   const store = useStore();
@@ -25,9 +26,15 @@ function Basket() {
     removeFromBasket: useCallback(_id => store.actions.basket.removeFromBasket(_id), [store]),
     // Закрытие любой модалки
     closeModal: useCallback(() => {
-      //store.actions.modals.close();
-      dispatch(modalsActions.close());
+      store.actions.modals.close();
+      // dispatch(modalsActions.close());
     }, [store]),
+    // Открытие модалки
+    openModal: useCallback(() => {
+      store.actions.catalog.setInner()
+      store.actions.modals.open("another-item");
+    }, [store]),
+
   };
 
   const { t } = useTranslate();
@@ -49,14 +56,11 @@ function Basket() {
   };
 
   return (
-    <ModalLayout
-      title={t('basket.title')}
-      labelClose={t('basket.close')}
-      onClose={callbacks.closeModal}
-    >
+    <>
       <List list={select.list} renderItem={renders.itemBasket} />
       <BasketTotal sum={select.sum} t={t} />
-    </ModalLayout>
+      {select.amount > 0 && <Controls title="Добавить еще товар" onAdd={callbacks.openModal}/>}
+    </>
   );
 }
 

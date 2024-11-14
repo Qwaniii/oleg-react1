@@ -9,8 +9,7 @@ import Article from './article';
 import Login from './login';
 import Profile from './profile';
 import Protected from '../containers/protected';
-import { useSelector as useSelectorRedux } from 'react-redux';
-import Modal from '../containers/modal';
+import Modals from './modals';
 
 /**
  * Приложение
@@ -38,7 +37,7 @@ function App() {
           }
         />
       </Routes>
-      <Modal/>
+      <Modals/>
     </>
   );
 }

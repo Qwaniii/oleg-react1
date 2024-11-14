@@ -21,7 +21,21 @@ class CatalogState extends StoreModule {
       },
       count: 0,
       waiting: false,
+      inner: false
     };
+  }
+
+  // Установка метки каталога из модального окна
+
+  setInner() {
+      // Установка новых параметров и признака загрузки
+      this.setState(
+        {
+          ...this.getState(),
+          inner: !this.getState().inner
+        },
+        'Каталог внкутри модального окна',
+      );
   }
 
   /**

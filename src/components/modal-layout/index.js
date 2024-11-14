@@ -4,7 +4,7 @@ import { cn as bem } from '@bem-react/classname';
 import './style.css';
 
 function ModalLayout(props) {
-  const { title = 'Модалка', labelClose = 'Закрыть', onClose = () => {} } = props;
+  const { title = 'Модалка', labelClose = 'Закрыть', onClose = () => {}, push=false} = props;
   const cn = bem('ModalLayout');
 
   // Корректировка центра, если модалка больше окна браузера.
@@ -29,8 +29,8 @@ function ModalLayout(props) {
 
   return (
     <div className={cn()} ref={layout}>
-      <div className={cn('frame')} ref={frame}>
-        <div className={cn('head')}>
+      <div className={cn(push ? 'push' : 'frame')} ref={frame}>
+        <div className={cn(push ? 'upper' : 'head')}>
           <h1 className={cn('title')}>{title}</h1>
           <button className={cn('close')} onClick={onClose}>
             {labelClose}
