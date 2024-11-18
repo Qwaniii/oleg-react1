@@ -32,7 +32,7 @@ function CatalogList() {
     // Добавление в корзину
     addCount: useCallback(async(_id) => {
       const count = await store.actions.modals.open("push-count")
-      store.actions.basket.addToBasket(_id, count)
+      if(count) store.actions.basket.addToBasket(_id, count)
     }, [store]),   
     // addToBasket: useCallback(_id => store.actions.basket.addToBasket(_id), [store]),
     // Пагинация

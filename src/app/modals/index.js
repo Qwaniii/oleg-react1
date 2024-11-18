@@ -27,12 +27,10 @@ function Modals() {
     'basket': 
         <Basket />
       ,
-    'push-count': 
+    'push-count': modal => (
         <Count 
-            onSubmit={select.callback} 
-            onClose={select.callback}
-            button={{add: "ОК", cancel: "Отмена"}}
-        />
+            onSubmit={modal.callback}
+        />)
       ,
     'another-item': 
         <FromBasket />
@@ -69,7 +67,10 @@ function Modals() {
                       onClose={modal.callback}
                       push={modal.name.includes("push") ? true : false}
               >
-                <Modal key={modal} renderModal={renders[modal.name]}/>
+                <Modal  key={modal.name} 
+                        renderModal={renders[modal.name]}
+                        modal={modal}
+                />
               </ModalLayout>
         ))}
     </>

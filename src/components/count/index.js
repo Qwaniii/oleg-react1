@@ -3,7 +3,7 @@ import { cn as bem } from '@bem-react/classname';
 import './style.css';
 import ModalPush from '../modal-push';
 
-function Count({ onSubmit, onClose, button={add: "Ок", cancel: "Отмена"} }) {
+function Count({ onSubmit, button={add: "Ок", cancel: "Отмена"} }) {
   const cn = bem('Count');
 
   const [count, setCount] = useState(1)
@@ -11,6 +11,8 @@ function Count({ onSubmit, onClose, button={add: "Ок", cancel: "Отмена"}
   const onChange = (e) => {
     setCount(e.target.value)
   }
+
+  const onClose = () => onSubmit( _, true)
 
   const func = () => {
    onSubmit(Number(count))
