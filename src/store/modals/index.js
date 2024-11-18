@@ -3,19 +3,23 @@ import StoreModule from '../module';
 class ModalsState extends StoreModule {
   initState() {
     return {
-      name: [],
-      params: null,
-      callback: () => {}
+      modal: [],
     };
   }
 
-  open(modal) {
+  open(name) {
+
+    const windows = this.getState().modal
+
     return new Promise((resolve) => {
+      const id = name + window.length + 1
+      const close = windows.filter(window => window.id !== id)
       const handleModalClose = (result) => {
-        this.close()
-        resolve(result)
+        this.setState({ ...this.getState(), modal: close})
+        if(result) resolve(result)
       };
-      this.setState({ ...this.getState(), name: [...this.getState().name, modal], callback: handleModalClose }, `Открытие модалки ${modal}`);
+
+      this.setState({ ...this.getState(), modal: [...windows, {id, name, callback: handleModalClose}] }, `Открытие модалки ${name}`);
     })
   }
 

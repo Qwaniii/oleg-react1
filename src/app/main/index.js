@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useEffect } from 'react';
 import useStore from '../../hooks/use-store';
 import useTranslate from '../../hooks/use-translate';
 import useInit from '../../hooks/use-init';
@@ -9,13 +9,17 @@ import CatalogFilter from '../../containers/catalog-filter';
 import CatalogList from '../../containers/catalog-list';
 import LocaleSelect from '../../containers/locale-select';
 import TopHead from '../../containers/top-head';
+import useSelector from '../../hooks/use-selector';
 
 function Main() {
   const store = useStore();
 
+
   useInit(
     async () => {
-      await Promise.all([store.actions.catalog.initParams(), store.actions.categories.load()]);
+      await Promise.all([store.actions.catalog.initParams(), store.actions.categories.load()])
+      const res = store.actions.catalog.duplicate()
+      store.actions.duplicate.state(res.store)
     },
     [],
     true,

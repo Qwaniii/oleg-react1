@@ -6,16 +6,16 @@ import './style.css';
 import { Link } from 'react-router-dom';
 
 function Item(props) {
-  const { onAdd = () => {}, labelCurr = '₽', labelAdd = 'Добавить', inner=false } = props;
+  const { onAdd = () => {}, labelCurr = '₽', labelAdd = 'Добавить', inner=false, select=() => {} } = props;
   const cn = bem('Item');
 
   const callbacks = {
     onAdd:  (e) =>  onAdd(props.item._id),
-    // onAdd: e => onAdd(props.item._id),
+    select: () => select(props.item._id)
   };
 
   return (
-    <div className={cn("", inner ? "selected" : "")} onClick={(e) => console.log(e.target)}>
+    <div className={cn("", props.item.selected ? "selected" : "")} onClick={inner ? callbacks.select : () => {}}>
       {/*<div className={cn('code')}>{props.item._id}</div>*/}
       <div className={cn('title')}>
         <Link to={props.link}>{props.item.title}</Link>

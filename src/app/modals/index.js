@@ -13,14 +13,15 @@ import ModalLayout from '../../components/modal-layout';
 function Modals() {
   const store = useStore()
   const select = useSelector(state => ({
-    modalName: state.modals.name,
-    callback: state.modals.callback
+    modalName: state.modals.modal.name,
+    callback: state.modals.modal.callback,
+    modal: state.modals.modal
   }))
 
   const { t } = useTranslate();
 
 
-  const onClose =() => store.actions.modals.close()
+  // const onClose =() => store.actions.modals.close()
 
   const renders = {
     'basket': 
@@ -29,7 +30,7 @@ function Modals() {
     'push-count': 
         <Count 
             onSubmit={select.callback} 
-            onClose={onClose}
+            onClose={select.callback}
             button={{add: "ОК", cancel: "Отмена"}}
         />
       ,
@@ -61,14 +62,14 @@ function Modals() {
 
   return (
     <>
-        {select.modalName.map(modal => (
+        {select.modal.map(modal => (
               <ModalLayout
-                      title={params[modal].title}
-                      labelClose={params[modal].labelClose}
-                      onClose={onClose}
-                      push={modal.includes("push") ? true : false}
+                      title={params[modal.name].title}
+                      labelClose={params[modal.name].labelClose}
+                      onClose={modal.callback}
+                      push={modal.name.includes("push") ? true : false}
               >
-                <Modal key={modal} renderModal={renders[modal]}/>
+                <Modal key={modal} renderModal={renders[modal.name]}/>
               </ModalLayout>
         ))}
     </>

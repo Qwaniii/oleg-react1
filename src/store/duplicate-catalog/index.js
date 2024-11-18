@@ -4,26 +4,30 @@ import exclude from '../../utils/exclude';
 /**
  * Состояние каталога - параметры фильтра и список товара
  */
-class CatalogState extends StoreModule {
+class DuplicateCatalog extends StoreModule {
   /**
    * Начальное состояние
    * @return {Object}
    */
   initState() {
     return {
-      list: [],
-      params: {
-        page: 1,
-        limit: 10,
-        sort: 'order',
-        query: '',
-        category: '',
-      },
-      count: 0,
-      waiting: false,
-      inner: false
     };
   }
+
+  setSelect(id) {
+    this.setState({
+      ...this.getState(),
+      list: this.getState().list.map(item => {
+        if (item._id === id) {
+          return {
+            ...item,
+            selected: !item.selected,
+          };
+        }
+        return item
+    })
+  })
+}
 
   // Установка метки каталога из модального окна
 
@@ -38,10 +42,8 @@ class CatalogState extends StoreModule {
       );
   }
 
-  
-
-  duplicate() {
-    return new CatalogState({...this.getState()})
+  state(newState) {
+    this.setState(newState)
   }
 
   /**
@@ -134,4 +136,4 @@ class CatalogState extends StoreModule {
   }
 }
 
-export default CatalogState;
+export default DuplicateCatalog;

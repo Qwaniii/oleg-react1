@@ -24,7 +24,8 @@ function CatalogList() {
     count: state.catalog.count,
     waiting: state.catalog.waiting,
     countItem: state.basket.count,
-    inner: state.catalog.inner
+    inner: state.catalog.inner,
+    duplicateList: state.duplicate.list
   }));
 
   const callbacks = {
@@ -48,6 +49,7 @@ function CatalogList() {
       },
       [select.limit, select.sort, select.query],
     ),
+    select: (id) => store.actions.duplicate.setSelect(id)
   };
 
   const { t } = useTranslate();
@@ -58,6 +60,7 @@ function CatalogList() {
         <Item
           item={item}
           onAdd={callbacks.addCount}
+          select={callbacks.select}
           link={`/articles/${item._id}`}
           labelAdd={t('article.add')}
           inner={select.inner}
@@ -69,7 +72,7 @@ function CatalogList() {
 
   return (
     <Spinner active={select.waiting}>
-      <List list={select.list} renderItem={renders.item} />
+      <List list={select.inner ? select.duplicateCatalog : select.list} renderItem={renders.item} />
       <Pagination
         count={select.count}
         page={select.page}
