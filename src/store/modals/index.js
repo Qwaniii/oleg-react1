@@ -18,7 +18,7 @@ class ModalsState extends StoreModule {
           const close = windows.filter(window => window.id !== id)
           this.setState({ ...this.getState(), modal: close})
           resolve(result)
-        }
+        } else resolve("close")
       };
 
       this.setState({ ...this.getState(), modal: [...windows, {id, name, callback: handleModalClose}] }, `Открытие модалки ${name}`);

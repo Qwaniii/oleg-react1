@@ -9,19 +9,16 @@ function Item(props) {
   const { onAdd = () => {}, labelCurr = '₽', labelAdd = 'Добавить', inner=false, select=() => {} } = props;
   const cn = bem('Item');
 
-  const [addId, setAddId] = useState([])
 
   const callbacks = {
     onAdd:  (e) =>  onAdd(props.item._id),
-    select: () => {
+    setSelect: () => {
       select(props.item._id)
     }
   };
 
-  console.log(addId)
-
   return (
-    <div className={cn("", props.item.selected ? "selected" : "")} onClick={inner ? callbacks.select : () => {}}>
+    <div className={cn("", props.item.selected ? "selected" : "")} onClick={inner ? callbacks.setSelect : () => {}}>
       {/*<div className={cn('code')}>{props.item._id}</div>*/}
       <div className={cn('title')}>
         <Link to={props.link}>{props.item.title}</Link>

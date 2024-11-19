@@ -30,9 +30,14 @@ function Basket() {
       // dispatch(modalsActions.close());
     }, [store]),
     // Открытие модалки
-    openModal: useCallback(() => {
+    openModal: useCallback(async() => {
       store.actions.catalog.setInner()
-      store.actions.modals.open("another-item");
+      const res = await store.actions.modals.open("another-item");
+      if(res !== "close") {
+        for (let id of res) {
+        await store.actions.basket.addToBasket(id, 1)
+      }
+    }
     }, [store]),
 
   };

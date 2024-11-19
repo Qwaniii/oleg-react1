@@ -16,19 +16,35 @@ function CatalogFilter() {
     query: state.catalog.params.query,
     category: state.catalog.params.category,
     categories: state.categories.list,
+    sortModal: state.duplicate.params,
+    queryModal: state.duplicate.params,
+    categoryModal: state.duplicate.params,
+    categories: state.categories.list,
+    inner: state.catalog.inner
   }));
 
   const callbacks = {
     // Сортировка
     onSort: useCallback(sort => store.actions.catalog.setParams({ sort }), [store]),
+    onSortModal: useCallback(sort => store.actions.duplicate.setParams({ sort }), [store]),
     // Поиск
     onSearch: useCallback(query => store.actions.catalog.setParams({ query, page: 1 }), [store]),
+    onSearchModal: useCallback(query => store.actions.duplicate.setParams({ query, page: 1 }), [store]),
     // Сброс
     onReset: useCallback(() => store.actions.catalog.resetParams(), [store]),
+    onResetModal: useCallback(() => store.actions.duplicate.resetParams(), [store]),
     // Фильтр по категории
     onCategory: useCallback(
       category =>
         store.actions.catalog.setParams({
+          category,
+          page: 1,
+        }),
+      [store],
+    ),
+    onCategoryModal: useCallback(
+      category =>
+        store.actions.duplicate.setParams({
           category,
           page: 1,
         }),
@@ -66,18 +82,20 @@ function CatalogFilter() {
     <SideLayout padding="medium">
       <Select
         options={options.categories}
-        value={select.category}
-        onChange={callbacks.onCategory}
+        value={select.inner ? select.categoryModal.category : select.category}
+        onChange={select.inner ? callbacks.onCategoryModal : callbacks.onCategory}
       />
-      <Select options={options.sort} value={select.sort} onChange={callbacks.onSort} />
+      <Select options={options.sort} 
+              value={select.inner ? select.sortModal.sort : select.sort} 
+              onChange={select.inner ? callbacks.onSortModal : callbacks.onSort} />
       <Input
-        value={select.query}
-        onChange={callbacks.onSearch}
+        value={select.inner ? select.queryModal.query : select.query}
+        onChange={select.inner ? callbacks.onSearchModal : callbacks.onSearch}
         placeholder={'Поиск'}
         delay={1000}
         theme={'big'}
       />
-      <button onClick={callbacks.onReset}>{t('filter.reset')}</button>
+      <button onClick={select.inner ? callbacks.onResetModal : callbacks.onReset}>{t('filter.reset')}</button>
     </SideLayout>
   );
 }

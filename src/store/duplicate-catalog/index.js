@@ -11,6 +11,7 @@ class DuplicateCatalog extends StoreModule {
    */
   initState() {
     return {
+      additionally: []
     };
   }
 
@@ -29,13 +30,32 @@ class DuplicateCatalog extends StoreModule {
   })
 }
 
+clearSelect() {
+  this.setState({
+    ...this.getState(),
+    list: this.getState().list.map(item => {
+        return {
+          ...item,
+          selected: false,
+        };
+  })
+})
+}
+
   addId(id) {
+    const exist = this.getState().additionally.find(item => item === id)
     this.setState({
       ...this.getState(),
-      
-    })
-      addId.find(id => id === props.item._id) ? setAddId(addId.filter(id => id !== props.item._id)) : setAddId(prevState => [...prevState, props.item._id])
+      additionally: exist ? this.getState().additionally.filter(item => item !==id) : [...this.getState().additionally, id]
+  })
+  }
 
+
+  clearId() {
+    this.setState({
+      ...this.getState(),
+      additionally: []
+    })
   }
 
   // Установка метки каталога из модального окна
@@ -52,7 +72,10 @@ class DuplicateCatalog extends StoreModule {
   }
 
   state(newState) {
-    this.setState(newState)
+    this.setState({
+      ...this.getState(),
+      ...newState
+    })
   }
 
   /**

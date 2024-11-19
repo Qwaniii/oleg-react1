@@ -10,14 +10,31 @@ import CatalogList from '../../containers/catalog-list';
 import LocaleSelect from '../../containers/locale-select';
 import TopHead from '../../containers/top-head';
 import Controls from '../../components/controls';
+import useSelector from '../../hooks/use-selector';
 
-function FromBasket() {
+
+function FromBasket({onSubmit}) {
+
+  const store = useStore()
+
+  const select = useSelector(state => ({
+    list: state.duplicate.additionally
+  }))
+
+  const addNewItem = () => {
+    store.actions.catalog.setInner()
+    store.actions.duplicate.clearId()
+    store.actions.duplicate.clearSelect()
+    onSubmit(select.list)
+  }
+
+  
 
   return (
     <>
       <CatalogFilter />
       <CatalogList />
-      <Controls title="Ок" />
+      <Controls title="Ок" onAdd={addNewItem}/>
     </>
   );
 }

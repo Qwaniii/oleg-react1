@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import Basket from '../../app/basket';
 import Count from '../../components/count';
 import useStore from '../../hooks/use-store';
@@ -18,6 +18,7 @@ function Modals() {
     modal: state.modals.modal
   }))
 
+
   const { t } = useTranslate();
 
 
@@ -32,8 +33,10 @@ function Modals() {
             onSubmit={modal.callback}
         />)
       ,
-    'another-item': () => (
-        <FromBasket />)
+    'another-item': (modal) => (
+        <FromBasket 
+          onSubmit={modal.callback}
+        />)
   };
 
   const params = {
@@ -64,7 +67,7 @@ function Modals() {
               <ModalLayout
                       title={params[modal.name].title}
                       labelClose={params[modal.name].labelClose}
-                      onClose={modal.callback}
+                      onClose={() => modal.callback("close")}
                       push={modal.name.includes("push") ? true : false}
               >
                 <Modal  key={modal.name} 
