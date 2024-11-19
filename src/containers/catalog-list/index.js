@@ -32,6 +32,7 @@ function CatalogList() {
     // Добавление в корзину
     addCount: useCallback(async(_id) => {
       const count = await store.actions.modals.open("push-count")
+      console.log(count)
       if(count) store.actions.basket.addToBasket(_id, count)
     }, [store]),   
     // addToBasket: useCallback(_id => store.actions.basket.addToBasket(_id), [store]),
@@ -72,7 +73,7 @@ function CatalogList() {
 
   return (
     <Spinner active={select.waiting}>
-      <List list={select.inner ? select.duplicateCatalog : select.list} renderItem={renders.item} />
+      <List list={select.inner ? select.duplicateList : select.list} renderItem={renders.item} />
       <Pagination
         count={select.count}
         page={select.page}

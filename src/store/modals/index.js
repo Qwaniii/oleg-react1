@@ -13,10 +13,12 @@ class ModalsState extends StoreModule {
 
     return new Promise((resolve) => {
       const id = name + window.length + 1
-      const close = windows.filter(window => window.id !== id)
       const handleModalClose = (result) => {
-        this.setState({ ...this.getState(), modal: close})
-        if(result) resolve(result)
+        if (result) {
+          const close = windows.filter(window => window.id !== id)
+          this.setState({ ...this.getState(), modal: close})
+          resolve(result)
+        }
       };
 
       this.setState({ ...this.getState(), modal: [...windows, {id, name, callback: handleModalClose}] }, `Открытие модалки ${name}`);

@@ -24,16 +24,16 @@ function Modals() {
   // const onClose =() => store.actions.modals.close()
 
   const renders = {
-    'basket': 
-        <Basket />
+    'basket': () => (
+        <Basket />)
       ,
     'push-count': modal => (
         <Count 
             onSubmit={modal.callback}
         />)
       ,
-    'another-item': 
-        <FromBasket />
+    'another-item': () => (
+        <FromBasket />)
   };
 
   const params = {

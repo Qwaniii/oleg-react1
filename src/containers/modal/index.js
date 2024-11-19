@@ -8,7 +8,7 @@ import ModalLayout from '../../components/modal-layout';
 
 
 
-function Modal({renderModal = () => {}, modal}) {
+function Modal({renderModal = (modal) => {}, modal = null}) {
 
   return (
     <div>

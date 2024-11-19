@@ -29,6 +29,15 @@ class DuplicateCatalog extends StoreModule {
   })
 }
 
+  addId(id) {
+    this.setState({
+      ...this.getState(),
+      
+    })
+      addId.find(id => id === props.item._id) ? setAddId(addId.filter(id => id !== props.item._id)) : setAddId(prevState => [...prevState, props.item._id])
+
+  }
+
   // Установка метки каталога из модального окна
 
   setInner() {

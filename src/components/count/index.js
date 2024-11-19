@@ -12,7 +12,6 @@ function Count({ onSubmit, button={add: "Ок", cancel: "Отмена"} }) {
     setCount(e.target.value)
   }
 
-  const onClose = () => onSubmit( _, true)
 
   const func = () => {
    onSubmit(Number(count))
@@ -23,7 +22,7 @@ function Count({ onSubmit, button={add: "Ок", cancel: "Отмена"} }) {
         <input className={cn("input")} min={1} max={1000} type="number" defaultValue={count} onChange={onChange}></input>
         <div className={cn("footer")}>
           <button disabled={count > 1000 || count < 1 ? "disabled" : ""} className={cn("success")} onClick={func}>{button.add}</button>
-          <button onClick={onClose}>{button.cancel}</button>
+          <button onClick={onSubmit}>{button.cancel}</button>
         </div>
       </div>
   );
