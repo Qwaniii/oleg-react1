@@ -34,7 +34,6 @@ function Basket() {
       store.create("modalCatalog", "catalog", true)
       const newCatalog = await store.actions.modalCatalog.initParams( {}, false)
 
-      store.actions.catalog.setInner()
       const res = await store.actions.modals.open("another-item");
       if(res !== "close") {
         for (let id of res) {
