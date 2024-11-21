@@ -18,8 +18,8 @@ function Main() {
   useInit(
     async () => {
       await Promise.all([store.actions.catalog.initParams(), store.actions.categories.load()])
-      const res = store.actions.catalog.duplicate()
-      store.actions.duplicate.state(res.store)
+      // const res = store.actions.catalog.duplicate()
+      // store.actions.duplicate.state(res.store)
     },
     [],
     true,

@@ -6,7 +6,7 @@ import './style.css';
 import { Link } from 'react-router-dom';
 
 function Item(props) {
-  const { onAdd = () => {}, labelCurr = '₽', labelAdd = 'Добавить', inner=false, select=() => {} } = props;
+  const { onAdd = () => {}, labelCurr = '₽', labelAdd = 'Добавить', select=() => {}, modal=false } = props;
   const cn = bem('Item');
 
 
@@ -18,7 +18,7 @@ function Item(props) {
   };
 
   return (
-    <div className={cn("", props.item.selected ? "selected" : "")} onClick={inner ? callbacks.setSelect : () => {}}>
+    <div className={cn("", props.item.selected ? "selected" : "")} onClick={props.modal ? callbacks.setSelect : () => {}}>
       {/*<div className={cn('code')}>{props.item._id}</div>*/}
       <div className={cn('title')}>
         <Link to={props.link}>{props.item.title}</Link>
@@ -27,7 +27,7 @@ function Item(props) {
         <div className={cn('price')}>
           {numberFormat(props.item.price)} {labelCurr}
         </div>
-        {!inner && <button onClick={callbacks.onAdd}>{labelAdd}</button>}
+        {!props.modal && <button onClick={callbacks.onAdd}>{labelAdd}</button>}
       </div>
     </div>
   );

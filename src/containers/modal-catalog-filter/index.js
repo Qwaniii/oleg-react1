@@ -8,34 +8,33 @@ import SideLayout from '../../components/side-layout';
 import treeToList from '../../utils/tree-to-list';
 import listToTree from '../../utils/list-to-tree';
 
-function CatalogFilter() {
+function ModalCatalogFilter() {
   const store = useStore();
 
   const select = useSelector(state => ({
-    sort: state.catalog.params.sort,
-    query: state.catalog.params.query,
-    category: state.catalog.params.category,
     categories: state.categories.list,
-    inner: state.catalog.inner
+    sortModal: state?.modalCatalog?.params,
+    queryModal: state?.modalCatalog?.params,
+    categoryModal: state?.modalCatalog?.params,
+    categories: state.categories.list,
   }));
 
   const callbacks = {
     // Сортировка
-    onSort: useCallback(sort => store.actions.catalog.setParams({ sort }), [store]),
+    onSortModal: useCallback(sort => store.actions.modalCatalog.setParams({ sort }, false, false), [store]),
     // Поиск
-    onSearch: useCallback(query => store.actions.catalog.setParams({ query, page: 1 }), [store]),
+    onSearchModal: useCallback(query => store.actions.modalCatalog.setParams({ query, page: 1 }, false, false), [store]),
     // Сброс
-    onReset: useCallback(() => store.actions.catalog.resetParams(), [store]),
+    onResetModal: useCallback(() => store.actions.modalCatalog.resetParams(), [store], false, false),
     // Фильтр по категории
-    onCategory: useCallback(
+    onCategoryModal: useCallback(
       category =>
-        store.actions.catalog.setParams({
+        store.actions.modalCatalog.setParams({
           category,
           page: 1,
-        }),
+        }, false, false),
       [store],
     ),
-    
   };
 
   const options = {
@@ -68,22 +67,22 @@ function CatalogFilter() {
     <SideLayout padding="medium">
       <Select
         options={options.categories}
-        value={select.category}
-        onChange={callbacks.onCategory}
+        value={select.categoryModal.category}
+        onChange={callbacks.onCategoryModal}
       />
       <Select options={options.sort} 
-              value={select.sort} 
-              onChange={callbacks.onSort} />
+              value={select.sortModal.sort} 
+              onChange={callbacks.onSortModal} />
       <Input
-        value={select.query}
-        onChange={callbacks.onSearch}
+        value={select.queryModal.query}
+        onChange={callbacks.onSearchModal}
         placeholder={'Поиск'}
         delay={1000}
         theme={'big'}
       />
-      <button onClick={callbacks.onReset}>{t('filter.reset')}</button>
+      <button onClick={callbacks.onResetModal}>{t('filter.reset')}</button>
     </SideLayout>
   );
 }
 
-export default memo(CatalogFilter);
+export default memo(ModalCatalogFilter);

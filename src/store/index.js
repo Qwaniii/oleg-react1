@@ -31,6 +31,11 @@ class Store {
     }
   }
 
+  create( newName, baseState ) {
+    this.actions[newName] = new modules[baseState](this, newName, this.config?.modules[newName] || {});
+    this.state[newName] = this.actions[newName].initState();
+  }
+
   /**
    * Подписка слушателя на изменения состояния
    * @param listener {Function}

@@ -11,21 +11,19 @@ import modalsActions from '../../store-redux/modals/actions';
 import useModal from '../../hooks/use-modal';
 
 
-function CatalogList() {
+function ModalCatalogList({modal}) {
   const store = useStore();
-  const dispatch = useDispatch();
 
 
   const select = useSelector(state => ({
-    list: state.catalog.list,
-    page: state.catalog.params.page,
-    limit: state.catalog.params.limit,
-    sort: state.catalog.params.sort,
-    query: state.catalog.params.query,
-    count: state.catalog.count,
-    waiting: state.catalog.waiting,
+    modalPage: state?.modalCatalog?.params,
+    modalLimit: state?.modalCatalog?.params,
+    modalSort: state?.modalCatalog?.params,
+    modalQuery: state?.modalCatalog?.params,
+    modalCount: state?.modalCatalog?.count,
     countItem: state.basket.count,
-    inner: state.catalog.inner,
+    duplicateList: state?.modalCatalog?.list,
+    additionally: state?.modalCatalog?.additionally
   }));
 
   const callbacks = {
@@ -36,18 +34,18 @@ function CatalogList() {
     }, [store]),   
     // addToBasket: useCallback(_id => store.actions.basket.addToBasket(_id), [store]),
     // Пагинация
-    onPaginate: useCallback(page => store.actions.catalog.setParams({ page }), [store]),
+    onPaginateModal: useCallback(page => store.actions.modalCatalog.setParams({ page }, false, false), [store]),
     // генератор ссылки для пагинатора
-    makePaginatorLink: useCallback(
+    makePaginatorLinkModal: useCallback(
       page => {
         return `?${new URLSearchParams({
           page,
-          limit: select.limit,
-          sort: select.sort,
-          query: select.query,
+          limit: select.modalLimit.limit,
+          sort: select.modalSort.sort,
+          query: select.modalQuery.query,
         })}`;
       },
-      [select.limit, select.sort, select.query],
+      [select.modalLimit, select.modalSort, select.modalQuery],
     ),
     selectAdd: (id) => {
       store.actions.modalCatalog.setSelect(id)
@@ -67,7 +65,7 @@ function CatalogList() {
           color={select.additionally}
           link={`/articles/${item._id}`}
           labelAdd={t('article.add')}
-          inner={select.inner}
+          modal={modal}
         />
       ),
       [callbacks.addToBasket, t],
@@ -76,16 +74,16 @@ function CatalogList() {
 
   return (
     <Spinner active={select.waiting}>
-      <List list={select.list} renderItem={renders.item} />
+      <List list={select.duplicateList} renderItem={renders.item} />
       <Pagination
-        count={select.count}
-        page={select.page}
-        limit={select.limit}
-        onChange={callbacks.onPaginate}
-        makeLink={callbacks.makePaginatorLink}
+        count={select.modalCount}
+        page={select.modalPage.page}
+        limit={select.modalLimit.limitt}
+        onChange={callbacks.onPaginateModal}
+        makeLink={callbacks.makePaginatorLinkModal}
       />
     </Spinner>
   );
 }
 
-export default memo(CatalogList);
+export default memo(ModalCatalogList);

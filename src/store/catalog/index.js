@@ -21,7 +21,7 @@ class CatalogState extends StoreModule {
       },
       count: 0,
       waiting: false,
-      inner: false
+      additionally: []
     };
   }
 
@@ -40,8 +40,51 @@ class CatalogState extends StoreModule {
 
   
 
-  duplicate() {
-    return new CatalogState({...this.getState()})
+  // duplicate() {
+  //   return new CatalogState({...this.getState()})
+  // }
+
+  setSelect(id) {
+    this.setState({
+      ...this.getState(),
+      list: this.getState().list.map(item => {
+        if (item._id === id) {
+          return {
+            ...item,
+            selected: !item.selected,
+          };
+        }
+        return item
+    })
+  })
+}
+
+clearSelect() {
+  this.setState({
+    ...this.getState(),
+    list: this.getState().list.map(item => {
+        return {
+          ...item,
+          selected: false,
+        };
+  })
+})
+}
+
+  addId(id) {
+    const exist = this.getState().additionally.find(item => item === id)
+    this.setState({
+      ...this.getState(),
+      additionally: exist ? this.getState().additionally.filter(item => item !==id) : [...this.getState().additionally, id]
+  })
+  }
+
+
+  clearId() {
+    this.setState({
+      ...this.getState(),
+      additionally: []
+    })
   }
 
   /**
@@ -50,16 +93,20 @@ class CatalogState extends StoreModule {
    * @param [newParams] {Object} Новые параметры
    * @return {Promise<void>}
    */
-  async initParams(newParams = {}) {
+  async initParams(newParams = {}, saveParams= true) {
+    this.saveParams = saveParams
     const urlParams = new URLSearchParams(window.location.search);
     let validParams = {};
-    if (urlParams.has('page')) validParams.page = Number(urlParams.get('page')) || 1;
-    if (urlParams.has('limit'))
-      validParams.limit = Math.min(Number(urlParams.get('limit')) || 10, 50);
-    if (urlParams.has('sort')) validParams.sort = urlParams.get('sort');
-    if (urlParams.has('query')) validParams.query = urlParams.get('query');
-    if (urlParams.has('category')) validParams.category = urlParams.get('category');
-    await this.setParams({ ...this.initState().params, ...validParams, ...newParams }, true);
+    console.log(saveParams)
+    if (saveParams) {
+      if (urlParams.has('page')) validParams.page = Number(urlParams.get('page')) || 1;
+      if (urlParams.has('limit'))
+        validParams.limit = Math.min(Number(urlParams.get('limit')) || 10, 50);
+      if (urlParams.has('sort')) validParams.sort = urlParams.get('sort');
+      if (urlParams.has('query')) validParams.query = urlParams.get('query');
+      if (urlParams.has('category')) validParams.category = urlParams.get('category');
+    }
+    await this.setParams({ ...this.initState().params, ...validParams, ...newParams }, true, saveParams);
   }
 
   /**
@@ -80,7 +127,7 @@ class CatalogState extends StoreModule {
    * @param [replaceHistory] {Boolean} Заменить адрес (true) или новая запись в истории браузера (false)
    * @returns {Promise<void>}
    */
-  async setParams(newParams = {}, replaceHistory = false) {
+  async setParams(newParams = {}, replaceHistory = false, saveParams = true) {
     const params = { ...this.getState().params, ...newParams };
 
     // Установка новых параметров и признака загрузки
@@ -94,7 +141,9 @@ class CatalogState extends StoreModule {
     );
 
     // Сохранить параметры в адрес страницы
+    if(saveParams){
     let urlSearch = new URLSearchParams(exclude(params, this.initState().params)).toString();
+
     const url =
       window.location.pathname + (urlSearch ? `?${urlSearch}` : '') + window.location.hash;
     if (replaceHistory) {
@@ -102,6 +151,7 @@ class CatalogState extends StoreModule {
     } else {
       window.history.pushState({}, '', url);
     }
+  }
 
     const apiParams = exclude(
       {

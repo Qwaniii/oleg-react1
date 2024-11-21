@@ -12,6 +12,7 @@ class ModalsState extends StoreModule {
     const windows = this.getState().modal
 
     return new Promise((resolve) => {
+      const inner = true
       const id = name + window.length + 1
       const handleModalClose = (result) => {
         if (result) {
@@ -21,9 +22,12 @@ class ModalsState extends StoreModule {
         } else resolve("close")
       };
 
-      this.setState({ ...this.getState(), modal: [...windows, {id, name, callback: handleModalClose}] }, `Открытие модалки ${name}`);
+      this.setState({ ...this.getState(), modal: [...windows, {id, name, callback: handleModalClose, inner}] }, `Открытие модалки ${name}`);
     })
   }
+
+
+  
 
   close() {
     const allModal = this.getState().name
