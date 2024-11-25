@@ -1,27 +1,43 @@
-import { memo } from 'react';
-import PropTypes from 'prop-types';
-import Item from '../item';
-import './style.css';
-
-function List({ list, renderItem = item => {} }) {
-  return (
-    <div className="List">
-      {list.map(item => (
-        <div key={item._id} className="List-item">
-          {renderItem(item)}
-        </div>
-      ))}
-    </div>
-  );
+"use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var react_1 = __importStar(require("react"));
+require("./style.css");
+function List(_a) {
+    var list = _a.list, renderItem = _a.renderItem;
+    return (react_1.default.createElement("div", { className: "List" }, list.map(function (item) { return (react_1.default.createElement("div", { key: item._id, className: "List-item" }, renderItem(item))); })));
 }
-
-List.propTypes = {
-  list: PropTypes.arrayOf(
-    PropTypes.shape({
-      _id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    }),
-  ).isRequired,
-  renderItem: PropTypes.func,
-};
-
-export default memo(List);
+exports.default = (0, react_1.memo)(List);
+//# sourceMappingURL=index.js.map
