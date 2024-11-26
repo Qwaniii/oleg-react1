@@ -1,7 +1,6 @@
 import { memo, useState } from 'react';
 import { cn as bem } from '@bem-react/classname';
 import './style.css';
-import ModalPush from '../modal-push';
 
 function Count({ onSubmit, button={add: "Ок", cancel: "Отмена"} }) {
   const cn = bem('Count');

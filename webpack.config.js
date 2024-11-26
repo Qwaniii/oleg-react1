@@ -14,7 +14,7 @@ let config = {
   },
   mode: process.env.NODE_ENV,
   resolve: {
-    extensions: ['.js', '.jsx'], // расширения по умолчанию если не указаны в import
+    extensions: ['.js', '.jsx', 'ts', 'tsx'], // расширения по умолчанию если не указаны в import
     modules: ['./', 'node_modules'], // Где искать файлы подключаемых модулей (пакетов)
   },
   module: {
@@ -24,6 +24,12 @@ let config = {
         test: /\.jsx?$/,
         exclude: /node_modules/,
         use: [{ loader: 'babel-loader' }],
+      },
+      // Транспиляция TS/TSX
+      {
+        test: /\.tsx?$/,
+        exclude: /node_modules/,
+        use: [{ loader: 'ts-loader' }],
       },
       // Правила обработки подключаемых файлов
       {
