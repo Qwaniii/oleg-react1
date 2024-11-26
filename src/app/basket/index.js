@@ -15,11 +15,11 @@ function Basket() {
   const store = useStore();
   const dispatch = useDispatch();
 
+ 
   useInit(async() => {
-     store.create("modalCatalog", "catalog", true)
-      await store.actions.modalCatalog.initParams( {}, false)
-  }, [store]);
-  
+    store.create("modalCatalog", "catalog", true)
+    const newCatalog = await store.actions.modalCatalog.initParams( {}, false)
+  }, [])
 
   const select = useSelector(state => ({
     list: state.basket.list,
@@ -37,7 +37,6 @@ function Basket() {
     }, [store]),
     // Открытие модалки
     openModal: useCallback(async() => {
-      // store.actions.catalog.setInner()
       const res = await store.actions.modals.open("another-item");
       if(res !== "close") {
         for (let id of res) {
