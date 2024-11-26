@@ -25,6 +25,7 @@ function Profile() {
     waiting: state.profile.waiting,
   }));
 
+
   const { t } = useTranslate();
 
   return (
