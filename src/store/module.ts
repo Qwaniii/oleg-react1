@@ -1,10 +1,16 @@
-import { ModulesState } from '../store';
+import Store, { ModulesState } from '../store';
+import Services from '../services'
+
 
 /**
  * Базовый класс для модулей хранилища
  * Для группировки действий над внешним состоянием
  */
 class StoreModule  {
+  name: string;
+  store: Store;
+  services: Services;
+  config: any
   /**
    * @param store {Store}
    * @param name {String}
