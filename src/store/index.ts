@@ -1,23 +1,16 @@
 import * as modules from './exports.js';
+import { ModulesActions, ModulesState, StoreConfig } from './types/store/index.js';
 
 
-type Modules = typeof modules;
-type KeyModules = keyof Modules
 
-type ModulesExt = {
-  [key in KeyModules]: InstanceType<Modules[key]>
-}
 
-export type ModulesState = {
-  [key in KeyModules]: ReturnType<ModulesExt['initState']>
-}
 
 export type StoreState = {
   services: any,
-  config: any,
+  config: StoreConfig,
   listeners: Array<(state: ModulesState) => void>,
   state: ModulesState,
-  actions: ModulesExt,
+  actions: ModulesActions,
   create: (name: string, newName: string) => void,
   subscribe: (listener: () => {}) => () => void,
   getState: () => ModulesState,
@@ -29,16 +22,16 @@ export type StoreState = {
  */
 class Store implements StoreState {
   services: any; 
-  config: any;
+  config: StoreConfig;
   listeners: ((state: ModulesState) => void)[];
   state: ModulesState;
-  actions: ModulesExt;
+  actions: ModulesActions;
   /**
    * @param services {Services}
    * @param config {Object}
    * @param initState {Object}
    */
-  constructor(services, config = {}, initState: ModulesState = {} as ModulesState) {
+  constructor(services, config = {} as StoreConfig, initState: ModulesState = {} as ModulesState) {
     this.services = services;
     this.config = config;
     this.listeners = []; // Слушатели изменений состояния
@@ -53,16 +46,22 @@ class Store implements StoreState {
      * session: SessionState,
      * profile: ProfileState
      * }} */
-    this.actions = {};
+    this.actions = {} as ModulesActions;
     for (const name of Object.keys(modules)) {
       this.actions[name] = new modules[name](this, name, this.config?.modules[name] || {});
       this.state[name] = this.actions[name].initState();
     }
   }
 
-  create( newName, baseState ) {
+  create( newName, baseState) {
     this.actions[newName] = new modules[baseState](this, newName, this.config?.modules[newName] || {});
     this.state[newName] = this.actions[newName].initState();
+
+    return () => {
+      delete this.actions[newName];
+      delete this.state[newName];
+
+    }
   }
 
   /**

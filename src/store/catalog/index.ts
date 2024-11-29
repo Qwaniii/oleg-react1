@@ -1,19 +1,48 @@
-import StoreModule from '../module';
-import exclude from '../../utils/exclude';
+import StoreModule from '../module.ts';
+import exclude from '../../utils/exclude/index.js';
 
 /**
  * Состояние каталога - параметры фильтра и список товара
  */
-class DuplicateCatalog extends StoreModule {
+class CatalogState extends StoreModule {
   /**
    * Начальное состояние
    * @return {Object}
    */
   initState() {
     return {
+      list: [],
+      params: {
+        page: 1,
+        limit: 10,
+        sort: 'order',
+        query: '',
+        category: '',
+      },
+      count: 0,
+      waiting: false,
       additionally: []
     };
   }
+
+  // Установка метки каталога из модального окна
+
+  setInner() {
+      // Установка новых параметров и признака загрузки
+      this.setState(
+        {
+          ...this.getState(),
+          inner: !this.getState().inner
+        },
+        'Каталог внутри модального окна',
+      );
+  }
+
+  
+
+  // duplicate() {
+  //   return new CatalogState({...this.getState()})
+  // }
 
   setSelect(id) {
     this.setState({
@@ -58,42 +87,26 @@ clearSelect() {
     })
   }
 
-  // Установка метки каталога из модального окна
-
-  setInner() {
-      // Установка новых параметров и признака загрузки
-      this.setState(
-        {
-          ...this.getState(),
-          inner: !this.getState().inner
-        },
-        'Каталог внутри модального окна',
-      );
-  }
-
-  state(newState) {
-    this.setState({
-      ...this.getState(),
-      ...newState
-    })
-  }
-
   /**
    * Инициализация параметров.
    * Восстановление из адреса
    * @param [newParams] {Object} Новые параметры
    * @return {Promise<void>}
    */
-  async initParams(newParams = {}) {
+  async initParams(newParams = {}, saveParams= true) {
+    this.saveParams = saveParams
     const urlParams = new URLSearchParams(window.location.search);
     let validParams = {};
-    if (urlParams.has('page')) validParams.page = Number(urlParams.get('page')) || 1;
-    if (urlParams.has('limit'))
-      validParams.limit = Math.min(Number(urlParams.get('limit')) || 10, 50);
-    if (urlParams.has('sort')) validParams.sort = urlParams.get('sort');
-    if (urlParams.has('query')) validParams.query = urlParams.get('query');
-    if (urlParams.has('category')) validParams.category = urlParams.get('category');
-    await this.setParams({ ...this.initState().params, ...validParams, ...newParams }, true);
+    console.log(saveParams)
+    if (saveParams) {
+      if (urlParams.has('page')) validParams.page = Number(urlParams.get('page')) || 1;
+      if (urlParams.has('limit'))
+        validParams.limit = Math.min(Number(urlParams.get('limit')) || 10, 50);
+      if (urlParams.has('sort')) validParams.sort = urlParams.get('sort');
+      if (urlParams.has('query')) validParams.query = urlParams.get('query');
+      if (urlParams.has('category')) validParams.category = urlParams.get('category');
+    }
+    await this.setParams({ ...this.initState().params, ...validParams, ...newParams }, true, saveParams);
   }
 
   /**
@@ -114,7 +127,7 @@ clearSelect() {
    * @param [replaceHistory] {Boolean} Заменить адрес (true) или новая запись в истории браузера (false)
    * @returns {Promise<void>}
    */
-  async setParams(newParams = {}, replaceHistory = false) {
+  async setParams(newParams = {}, replaceHistory = false, saveParams = true) {
     const params = { ...this.getState().params, ...newParams };
 
     // Установка новых параметров и признака загрузки
@@ -128,7 +141,9 @@ clearSelect() {
     );
 
     // Сохранить параметры в адрес страницы
+    if(saveParams){
     let urlSearch = new URLSearchParams(exclude(params, this.initState().params)).toString();
+
     const url =
       window.location.pathname + (urlSearch ? `?${urlSearch}` : '') + window.location.hash;
     if (replaceHistory) {
@@ -136,6 +151,7 @@ clearSelect() {
     } else {
       window.history.pushState({}, '', url);
     }
+  }
 
     const apiParams = exclude(
       {
@@ -168,4 +184,4 @@ clearSelect() {
   }
 }
 
-export default DuplicateCatalog;
+export default CatalogState;

@@ -1,9 +1,17 @@
-import APIService from './api';
-import Store from './store';
-import createStoreRedux from './store-redux';
+import APIService from './api/index.js';
+import Store from './store/index.ts';
+import createStoreRedux from './store-redux/index.js';
+import { StoreConfig } from './store/types/store/index.ts';
+
+export type ServicesType = {
+  
+}
 
 class Services {
-  constructor(config) {
+
+  config: StoreConfig
+
+  constructor(config: StoreConfig) {
     this.config = config;
   }
 

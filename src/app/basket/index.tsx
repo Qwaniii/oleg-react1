@@ -1,15 +1,13 @@
 import React, { memo, useCallback } from 'react';
 import { useDispatch, useStore as useStoreRedux } from 'react-redux';
 import useStore from '../../hooks/use-store';
-import useSelector from '../../hooks/use-selector';
+import useSelector from '../../hooks/use-selector.ts';
 import useInit from '../../hooks/use-init';
 import useTranslate from '../../hooks/use-translate';
 import ItemBasket from '../../components/item-basket';
-import List from '../../components/list';
-import ModalLayout from '../../components/modal-layout';
+import List from '../../components/list/index.tsx';
 import BasketTotal from '../../components/basket-total';
-import modalsActions from '../../store-redux/modals/actions';
-import Controls from '../../components/controls/';
+import Controls from '../../components/controls/index.tsx';
 
 type BasketProps = {
 

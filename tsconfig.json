@@ -5,5 +5,7 @@
       "sourceMap": true,
       "jsx": "react",
       "esModuleInterop": true,
+      "noEmit":true,
+      "allowImportingTsExtensions":true
     },
 }

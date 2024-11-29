@@ -1,5 +1,4 @@
-import count from '../../components/count';
-import StoreModule from '../module';
+import StoreModule from '../module.ts';
 
 type BasketProps = {
   list: [],

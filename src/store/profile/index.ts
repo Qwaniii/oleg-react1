@@ -1,4 +1,4 @@
-import StoreModule from '../module';
+import StoreModule from '../module.ts';
 
 /**
  * Детальная информация о пользователе

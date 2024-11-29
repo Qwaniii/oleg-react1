@@ -1,8 +1,8 @@
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
-import Basket from '../../app/basket';
+import Basket from '../../app/basket/index.tsx';
 import Count from '../../components/count';
 import useStore from '../../hooks/use-store';
-import useSelector from '../../hooks/use-selector';
+import useSelector from '../../hooks/use-selector.ts';
 import Modal from '../../containers/modal';
 import useTranslate from '../../hooks/use-translate';
 import FromBasket from '../../containers/from-basket';

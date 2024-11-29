@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import shallowequal from 'shallowequal';
 import useStore from './use-store';
-import { ModulesState } from '../store';
+import { ModulesState } from '../store/types/store';
 
 /**
  * Хук для выборки данных из store и отслеживания их изменения

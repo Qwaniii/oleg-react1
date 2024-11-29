@@ -2,7 +2,7 @@ import { memo, useCallback } from 'react';
 import SideLayout from '../../components/side-layout';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import useTranslate from '../../hooks/use-translate';
-import useSelector from '../../hooks/use-selector';
+import useSelector from '../../hooks/use-selector.ts';
 import useStore from '../../hooks/use-store';
 
 function TopHead() {
