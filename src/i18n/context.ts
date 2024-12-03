@@ -11,7 +11,7 @@ export const I18nContext: React.Context<{}> = createContext({});
  * @param children
  * @return {JSX.Element}
  */
-export function I18nProvider({ children }: {children: React.ReactNode}): I18nContext.Provider {
+export function I18nProvider({ children }: {children: React.ReactNode}) {
   const [lang, setLang] = useState('ru');
 
   const i18n = useMemo(
