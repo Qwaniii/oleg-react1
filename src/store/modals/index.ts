@@ -1,4 +1,4 @@
-import StoreModule from '../module';
+import StoreModule from '../module.ts';
 
 class ModalsState extends StoreModule {
   initState() {
@@ -7,7 +7,7 @@ class ModalsState extends StoreModule {
     };
   }
 
-  open(name) {
+  open(name: string) {
 
     const windows = this.getState().modal
 

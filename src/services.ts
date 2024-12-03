@@ -1,16 +1,25 @@
-import APIService from './api';
-import Store from './store';
-import createStoreRedux from './store-redux';
+import APIService from './api/index.js';
+import Store, { StoreState } from './store/index.ts';
+import createStoreRedux from './store-redux/index.js';
+import { APIServiceProps, StoreConfig } from './store/types/store/index.ts';
+
+
 
 class Services {
-  constructor(config) {
+
+  config: StoreConfig
+  _api: APIServiceProps
+  _store:  StoreState
+  _redux: any
+
+  constructor(config: StoreConfig) {
     this.config = config;
   }
 
   /**
    * Сервис АПИ
-   * @returns {APIService}
    */
+  
   get api() {
     if (!this._api) {
       this._api = new APIService(this, this.config.api);

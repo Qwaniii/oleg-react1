@@ -7,7 +7,7 @@ import PageLayout from '../../components/page-layout';
 import Head from '../../components/head';
 import Navigation from '../../containers/navigation';
 import Spinner from '../../components/spinner';
-import ArticleCard from '../../components/article-card';
+import ArticleCard from '../../components/article-card/index.tsx';
 import LocaleSelect from '../../containers/locale-select';
 import TopHead from '../../containers/top-head';
 import { useDispatch, useSelector } from 'react-redux';

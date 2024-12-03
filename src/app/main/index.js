@@ -9,7 +9,6 @@ import CatalogFilter from '../../containers/catalog-filter';
 import CatalogList from '../../containers/catalog-list';
 import LocaleSelect from '../../containers/locale-select';
 import TopHead from '../../containers/top-head';
-import useSelector from '../../hooks/use-selector';
 
 function Main() {
   const store = useStore();

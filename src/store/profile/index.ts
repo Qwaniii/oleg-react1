@@ -1,4 +1,4 @@
-import StoreModule from '../module';
+import StoreModule from '../module.ts';
 
 /**
  * Детальная информация о пользователе
@@ -15,7 +15,7 @@ class ProfileState extends StoreModule {
    * Загрузка профиля
    * @return {Promise<void>}
    */
-  async load() {
+  async load(): Promise<void> {
     // Сброс текущего профиля и установка признака ожидания загрузки
     this.setState({
       data: {},

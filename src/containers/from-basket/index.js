@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import useStore from '../../hooks/use-store';
-import Controls from '../../components/controls';
-import useSelector from '../../hooks/use-selector';
+import Controls from '../../components/controls/index.tsx';
+import useSelector from '../../hooks/use-selector.ts';
 import ModalCatalogFilter from '../modal-catalog-filter';
 import ModalCatalogList from '../modal-catalog-list';
 

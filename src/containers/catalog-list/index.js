@@ -1,14 +1,12 @@
 import { memo, useCallback } from 'react';
 import useStore from '../../hooks/use-store';
-import useSelector from '../../hooks/use-selector';
+import useSelector from '../../hooks/use-selector.ts';
 import useTranslate from '../../hooks/use-translate';
-import Item from '../../components/item';
-import List from '../../components/list';
-import Pagination from '../../components/pagination';
+import Item from '../../components/item/index.tsx';
+import List from '../../components/list/index.tsx';
+import Pagination from '../../components/pagination/index.tsx';
 import Spinner from '../../components/spinner';
 import { useDispatch } from 'react-redux';
-import modalsActions from '../../store-redux/modals/actions';
-import useModal from '../../hooks/use-modal';
 
 
 function CatalogList() {

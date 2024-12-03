@@ -1,5 +1,4 @@
-import count from '../../components/count';
-import StoreModule from '../module';
+import StoreModule from '../module.ts';
 
 type BasketProps = {
   list: [],
@@ -23,14 +22,17 @@ class BasketState extends StoreModule {
 
   /**
    * Добавление товара в корзину
-   * @param _id {String} Код товара
    */
   async addToBasket(_id: string | number, count: number): Promise<void> {
-      let sum = 0;
+      let sum: number = 0;
       // Ищем товар в корзине, чтобы увеличить его количество
-      let exist = false;
+      let exist: boolean = false;
       const list = this.getState().list.map(item => {
-        let result = item;
+        let result: {
+          _id: string,
+          price: number,
+          amount: number
+        } = item;
         if (item._id === _id) {
           exist = true; // Запомним, что был найден в корзине
           result = { ...item, amount: item.amount + count };
@@ -63,9 +65,8 @@ class BasketState extends StoreModule {
 
   /**
    * Удаление товара из корзины
-   * @param _id Код товара
    */
-  removeFromBasket(_id) {
+  removeFromBasket(_id: string | number): void {
     let sum = 0;
     const list = this.getState().list.filter(item => {
       if (item._id === _id) return false;

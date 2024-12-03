@@ -5,12 +5,12 @@ import LocaleSelect from '../../containers/locale-select';
 import Navigation from '../../containers/navigation';
 import PageLayout from '../../components/page-layout';
 import Input from '../../components/input';
-import Field from '../../components/field';
+import Field from '../../components/field/index.tsx';
 import SideLayout from '../../components/side-layout';
 import TopHead from '../../containers/top-head';
 import { useLocation, useNavigate } from 'react-router-dom';
 import useStore from '../../hooks/use-store';
-import useSelector from '../../hooks/use-selector';
+import useSelector from '../../hooks/use-selector.ts';
 import useInit from '../../hooks/use-init';
 
 function Login() {

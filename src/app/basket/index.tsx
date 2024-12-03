@@ -1,15 +1,15 @@
 import React, { memo, useCallback } from 'react';
 import { useDispatch, useStore as useStoreRedux } from 'react-redux';
 import useStore from '../../hooks/use-store';
-import useSelector from '../../hooks/use-selector';
+import useSelector from '../../hooks/use-selector.ts';
 import useInit from '../../hooks/use-init';
-import useTranslate from '../../hooks/use-translate';
+import useTranslate from '../../hooks/use-translate.ts';
 import ItemBasket from '../../components/item-basket';
-import List from '../../components/list';
-import ModalLayout from '../../components/modal-layout';
+import List from '../../components/list/index.tsx';
 import BasketTotal from '../../components/basket-total';
-import modalsActions from '../../store-redux/modals/actions';
-import Controls from '../../components/controls/';
+import Controls from '../../components/controls/index.tsx';
+import { StoreConfig } from '../../store/types/store/index.ts';
+import CatalogState from '../../store/catalog/index.ts';
 
 type BasketProps = {
 
@@ -19,18 +19,20 @@ function Basket() {
   const store = useStore();
   
   const dispatch = useDispatch();
-
- 
-  useInit(async() => {
-    store.create("modalCatalog", "catalog", true)
-    const newCatalog = await store.actions.modalCatalog.initParams( {}, false)
-  }, [])
-
-  const select = useSelector(state => ({
+  
+  const select = useSelector<StoreConfig>(state => ({
     list: state.basket.list,
     amount: state.basket.amount,
     sum: state.basket.sum,
+    catalog: state.catalog
   }));
+
+
+  useInit(async() => {
+    store.create<CatalogState>("newCatalog", "catalog", true)
+    const newCatalog = await store.actions.modalCatalog.initParams( {}, false)
+  }, [])
+
 
   const callbacks = {
     // Удаление из корзины
@@ -53,6 +55,9 @@ function Basket() {
   };
 
   const { t } = useTranslate();
+
+  
+
 
   const renders = {
     itemBasket: useCallback(

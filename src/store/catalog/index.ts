@@ -1,13 +1,28 @@
-import StoreModule from '../module';
-import exclude from '../../utils/exclude';
+import StoreModule from '../module.ts';
+import exclude from '../../utils/exclude/index.js';
+
+export type ParamsProps = {
+    page?: number,
+    limit?: number,
+    sort?: string,
+    query?: string,
+    category?: string,
+}
+
+export type InitProps = {
+  saveParams: boolean,
+  newParams: ParamsProps
+}
 
 /**
  * Состояние каталога - параметры фильтра и список товара
  */
 class CatalogState extends StoreModule {
+
+  saveParams: boolean
+
   /**
    * Начальное состояние
-   * @return {Object}
    */
   initState() {
     return {
@@ -44,7 +59,7 @@ class CatalogState extends StoreModule {
   //   return new CatalogState({...this.getState()})
   // }
 
-  setSelect(id) {
+  setSelect(id: string | number) {
     this.setState({
       ...this.getState(),
       list: this.getState().list.map(item => {
@@ -71,7 +86,7 @@ clearSelect() {
 })
 }
 
-  addId(id) {
+  addId(id: string | number) {
     const exist = this.getState().additionally.find(item => item === id)
     this.setState({
       ...this.getState(),
@@ -93,11 +108,10 @@ clearSelect() {
    * @param [newParams] {Object} Новые параметры
    * @return {Promise<void>}
    */
-  async initParams(newParams = {}, saveParams= true) {
+  async initParams(newParams = {} as ParamsProps, saveParams: boolean = true): Promise<void> {
     this.saveParams = saveParams
     const urlParams = new URLSearchParams(window.location.search);
-    let validParams = {};
-    console.log(saveParams)
+    let validParams: ParamsProps = {};
     if (saveParams) {
       if (urlParams.has('page')) validParams.page = Number(urlParams.get('page')) || 1;
       if (urlParams.has('limit'))
@@ -127,7 +141,7 @@ clearSelect() {
    * @param [replaceHistory] {Boolean} Заменить адрес (true) или новая запись в истории браузера (false)
    * @returns {Promise<void>}
    */
-  async setParams(newParams = {}, replaceHistory = false, saveParams = true) {
+  async setParams(newParams: ParamsProps = {}, replaceHistory: boolean = false, saveParams: boolean = true):  Promise<void> {
     const params = { ...this.getState().params, ...newParams };
 
     // Установка новых параметров и признака загрузки
