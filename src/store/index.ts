@@ -1,5 +1,5 @@
 import * as modules from './exports.js';
-import { ModulesActions, ModulesState, StoreConfig } from './types/store/index.js';
+import { KeyModules, ModulesActions, ModulesState, ServicesType, StoreConfig } from './types/store/index.js';
 
 
 
@@ -21,17 +21,14 @@ export type StoreState = {
  * Хранилище состояния приложения
  */
 class Store implements StoreState {
-  services: any; 
+  services: ServicesType; 
   config: StoreConfig;
   listeners: ((state: ModulesState) => void)[];
   state: ModulesState;
   actions: ModulesActions;
-  /**
-   * @param services {Services}
-   * @param config {Object}
-   * @param initState {Object}
-   */
-  constructor(services, config = {} as StoreConfig, initState: ModulesState = {} as ModulesState) {
+
+
+  constructor(services: ServicesType, config = {} as StoreConfig, initState: ModulesState = {} as ModulesState) {
     this.services = services;
     this.config = config;
     this.listeners = []; // Слушатели изменений состояния
@@ -53,14 +50,13 @@ class Store implements StoreState {
     }
   }
 
-  create( newName, baseState) {
-    this.actions[newName] = new modules[baseState](this, newName, this.config?.modules[newName] || {});
-    this.state[newName] = this.actions[newName].initState();
+  create<K extends KeyModules>( newName: K, baseState: K) {
+    this.actions[newName] = new modules[baseState](this, newName, this.config?.modules[newName] || {}) as ModulesActions[K]
+    this.state[newName] = this.actions[newName].initState() as ModulesState[K];
 
     return () => {
       delete this.actions[newName];
       delete this.state[newName];
-
     }
   }
 

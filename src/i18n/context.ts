@@ -1,17 +1,17 @@
-import { createContext, useMemo, useState } from 'react';
+import React, { Context, createContext, FC, useMemo, useState } from 'react';
 import translate from './translate';
 
 /**
  * @type {React.Context<{}>}
  */
-export const I18nContext = createContext({});
+export const I18nContext: React.Context<{}> = createContext({});
 
 /**
  * Обертка над провайдером контекста, чтобы управлять изменениями в контексте
  * @param children
  * @return {JSX.Element}
  */
-export function I18nProvider({ children }) {
+export function I18nProvider({ children }: {children: React.ReactNode}): I18nContext.Provider {
   const [lang, setLang] = useState('ru');
 
   const i18n = useMemo(

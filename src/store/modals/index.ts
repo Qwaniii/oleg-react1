@@ -7,7 +7,7 @@ class ModalsState extends StoreModule {
     };
   }
 
-  open(name) {
+  open(name: string) {
 
     const windows = this.getState().modal
 

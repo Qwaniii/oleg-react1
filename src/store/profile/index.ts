@@ -15,7 +15,7 @@ class ProfileState extends StoreModule {
    * Загрузка профиля
    * @return {Promise<void>}
    */
-  async load() {
+  async load(): Promise<void> {
     // Сброс текущего профиля и установка признака ожидания загрузки
     this.setState({
       data: {},

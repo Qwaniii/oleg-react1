@@ -31,7 +31,7 @@ class SessionState extends StoreModule {
       const res = await this.services.api.request({
         url: '/api/v1/users/sign',
         method: 'POST',
-        body: JSON.stringify(data),
+        body: JSON.stringify(data)
       });
 
       if (!res.data.error) {

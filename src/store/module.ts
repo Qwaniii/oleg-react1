@@ -1,6 +1,6 @@
 import Store from '../store/index.ts';
 import Services from '../services'
-import { StoreConfig } from './types/store/index.ts';
+import { ServicesType, StoreConfig } from './types/store/index.ts';
 
 
 /**
@@ -10,7 +10,7 @@ import { StoreConfig } from './types/store/index.ts';
 class StoreModule  {
   name: string;
   store: Store;
-  services: Services;
+  services: ServicesType;
   config: StoreConfig
 
   constructor(store: Store, name: string, config: StoreConfig) {
@@ -28,7 +28,7 @@ class StoreModule  {
     return this.store.getState()[this.name];
   }
 
-  setState(newState, description = 'setState') {
+  setState(newState, description: string = 'setState') {
     this.store.setState(
       {
         ...this.store.getState(),

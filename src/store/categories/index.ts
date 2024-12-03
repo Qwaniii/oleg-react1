@@ -6,7 +6,6 @@ import StoreModule from '../module.ts';
 class CategoriesState extends StoreModule {
   /**
    * Начальное состояние
-   * @return {Object}
    */
   initState() {
     return {
@@ -18,7 +17,7 @@ class CategoriesState extends StoreModule {
   /**
    * Загрузка списка товаров
    */
-  async load() {
+  async load(): Promise<void> {
     this.setState({ ...this.getState(), waiting: true }, 'Ожидание загрузки категорий');
 
     const res = await this.services.api.request({
