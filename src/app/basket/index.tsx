@@ -1,5 +1,5 @@
 import React, { memo, useCallback } from 'react';
-import { useDispatch, useStore as useStoreRedux } from 'react-redux';
+import { useDispatch} from 'react-redux';
 import useStore from '../../hooks/use-store';
 import useSelector from '../../hooks/use-selector.ts';
 import useInit from '../../hooks/use-init';
@@ -8,8 +8,9 @@ import ItemBasket from '../../components/item-basket';
 import List from '../../components/list/index.tsx';
 import BasketTotal from '../../components/basket-total';
 import Controls from '../../components/controls/index.tsx';
-import { StoreConfig } from '../../store/types/store/index.ts';
+import { ModulesDynamicKeys, StoreConfig } from '../../store/types/store/index.ts';
 import CatalogState from '../../store/catalog/index.ts';
+import useId from '../../hooks/use-id.ts'
 
 type BasketProps = {
 
@@ -27,9 +28,11 @@ function Basket() {
     catalog: state.catalog
   }));
 
+  const nameCatalog = ("catalog_" + useId()) as ModulesDynamicKeys<"catalog"> 
+
 
   useInit(async() => {
-    store.create<CatalogState>("newCatalog", "catalog", true)
+    store.create(nameCatalog, "catalog", true)
     const newCatalog = await store.actions.modalCatalog.initParams( {}, false)
   }, [])
 
@@ -54,10 +57,7 @@ function Basket() {
 
   };
 
-  const { t } = useTranslate();
-
-  
-
+  const { t } = useTranslate()
 
   const renders = {
     itemBasket: useCallback(

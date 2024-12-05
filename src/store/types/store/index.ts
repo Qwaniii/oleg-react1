@@ -7,12 +7,19 @@ type Modules = typeof modules;
 
 export type KeyModules = keyof Modules
 
+export type ModulesDynamicKeys<T extends KeyModules> = T | `${T}_${string}` 
+
 export type ModulesActions = {
-    [key in KeyModules]: InstanceType<Modules[key]>
+    [key in KeyModules as ModulesDynamicKeys<key>]: InstanceType<Modules[key]>
   }
   
 export type ModulesState = {
-  [key in KeyModules]: ReturnType<ModulesActions[key]['initState']>
+  // [key in KeyModules]: ReturnType<ModulesActions[key]['initState']>
+  [key in KeyModules as ModulesDynamicKeys<key>]: ReturnType<InstanceType<Modules[key]>['initState']>
+}
+
+export type DynamicState = {
+  [key in KeyModules as ModulesDynamicKeys<key>]: ReturnType<InstanceType<Modules[key]>['initState']>
 }
 
 export type Config = typeof config

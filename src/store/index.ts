@@ -1,5 +1,5 @@
 import * as modules from './exports.js';
-import { KeyModules, ModulesActions, ModulesState, ServicesType, StoreConfig } from './types/store/index.js';
+import { DynamicState, KeyModules, ModulesActions, ModulesDynamicKeys, ModulesState, ServicesType, StoreConfig } from './types/store/index.js';
 
 
 
@@ -50,7 +50,7 @@ class Store implements StoreState {
     }
   }
 
-  create<K extends KeyModules>( newName: K, baseState: K) {
+  create<T extends KeyModules, K extends ModulesDynamicKeys<T>>( newName: K, baseState: T) {
     this.actions[newName] = new modules[baseState](this, newName, this.config?.modules[newName] || {}) as ModulesActions[K]
     this.state[newName] = this.actions[newName].initState() as ModulesState[K];
 
