@@ -51,6 +51,8 @@ class Store implements StoreState {
   }
 
   create<T extends KeyModules, K extends ModulesDynamicKeys<T>>( newName: K, baseState: T) {
+    
+
     this.actions[newName] = new modules[baseState](this, newName, this.config?.modules[newName] || {}) as ModulesActions[K]
     this.state[newName] = this.actions[newName].initState() as ModulesState[K];
 

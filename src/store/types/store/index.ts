@@ -14,13 +14,12 @@ export type ModulesActions = {
   }
   
 export type ModulesState = {
-  // [key in KeyModules]: ReturnType<ModulesActions[key]['initState']>
   [key in KeyModules as ModulesDynamicKeys<key>]: ReturnType<InstanceType<Modules[key]>['initState']>
 }
 
-export type DynamicState = {
-  [key in KeyModules as ModulesDynamicKeys<key>]: ReturnType<InstanceType<Modules[key]>['initState']>
-}
+// export type DynamicState = {
+//   [key in KeyModules as ModulesDynamicKeys<key>]: ReturnType<InstanceType<Modules[key]>['initState']>
+// }
 
 export type Config = typeof config
 

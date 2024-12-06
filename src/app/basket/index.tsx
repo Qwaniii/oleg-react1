@@ -21,7 +21,7 @@ function Basket() {
   
   const dispatch = useDispatch();
   
-  const select = useSelector<StoreConfig>(state => ({
+  const select = useSelector(state => ({
     list: state.basket.list,
     amount: state.basket.amount,
     sum: state.basket.sum,
@@ -59,6 +59,7 @@ function Basket() {
 
   const { t } = useTranslate()
 
+ 
   const renders = {
     itemBasket: useCallback(
       item => (
